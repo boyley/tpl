@@ -91,14 +91,14 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .formLogin().defaultSuccessUrl("/index",true).loginPage("/login").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/login_check")
-                .failureUrl("/login?error").and()
+                .formLogin().loginPage("/sign").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/login_check")
+                .failureUrl("/sign?error").and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/").and()
                 .authorizeRequests()
 //                .accessDecisionManager(accessDecisionManager())//.expressionHandler(defaultWebSecurityExpressionHandler())
-                .antMatchers("/login", "/register").permitAll()
+                .antMatchers("/sign", "/register").permitAll()
 //                .antMatchers("/**").hasRole("USER")
 //                .anyRequest().authenticated();
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {

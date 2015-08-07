@@ -10,13 +10,13 @@ angular.module('sign')
             template: '<div ui-view="" class="fade-in-right-big smooth"></div>'
         }).state("access.login", {
             url: '/login',
-            templateUrl: '/login'
+            templateUrl: '/sign/login'
         }).state('access.signup', {
             url: '/signup',
-            templateUrl: '/signup'
+            templateUrl: '/sign/signup'
         }).state('access.forgotpwd', {
             url: '/forgotpwd',
-            templateUrl: '/forgotpwd'
+            templateUrl: '/sign/forgotpwd'
         })
     }]
 );
