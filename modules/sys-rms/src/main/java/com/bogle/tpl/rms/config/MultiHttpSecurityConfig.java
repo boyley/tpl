@@ -1,5 +1,6 @@
 package com.bogle.tpl.rms.config;
 
+import com.bogle.tpl.rms.filter.CsrfHeaderFilter;
 import com.bogle.tpl.rms.service.impl.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.ReflectionUtils;
@@ -42,7 +46,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void init(WebSecurity web) throws Exception {
-        web.debug(true);
+//        web.debug(true);
         super.init(web);
 
     }
@@ -91,14 +95,15 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .formLogin().loginPage("/sign").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/login_check")
+                .csrf().csrfTokenRepository(csrfTokenRepository()).and()
+                .formLogin().loginPage("/sign").defaultSuccessUrl("/abc",true).usernameParameter("username").passwordParameter("password").loginProcessingUrl("/login_check")
                 .failureUrl("/sign?error").and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/").and()
                 .authorizeRequests()
 //                .accessDecisionManager(accessDecisionManager())//.expressionHandler(defaultWebSecurityExpressionHandler())
-                .antMatchers("/sign", "/register").permitAll()
+                .antMatchers("/sign*", "/register").permitAll()
 //                .antMatchers("/**").hasRole("USER")
 //                .anyRequest().authenticated();
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -113,7 +118,8 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
                         fsi.setSecurityMetadataSource(securityMetadataSource);
                         fsi.setPublishAuthorizationSuccess(true);
                         try {
-                            http.authorizeRequests().anyRequest().authenticated();
+                            http.authorizeRequests().anyRequest().authenticated()
+                                    .and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -123,6 +129,11 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
+    }
 
 //    @Bean
 //    public DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler() {

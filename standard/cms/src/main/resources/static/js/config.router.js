@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('sign')
-   .config(
-    ['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(
+    ['$stateProvider', '$urlRouterProvider','$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $urlRouterProvider
             .otherwise('/access/login');
         $stateProvider.state('access', {
@@ -18,6 +18,7 @@ angular.module('sign')
             url: '/forgotpwd',
             templateUrl: '/sign/forgotpwd'
         })
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]
 );
 
