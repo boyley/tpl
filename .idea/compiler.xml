@@ -24,6 +24,7 @@
         <processorPath useClasspath="true" />
         <module name="cms" />
         <module name="sys-config" />
+        <module name="sys-rms" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -31,6 +32,7 @@
       <module name="modules" target="1.7" />
       <module name="standard" target="1.7" />
       <module name="sys-config" target="1.7" />
+      <module name="sys-rms" target="1.7" />
       <module name="tpl" target="1.7" />
     </bytecodeTargetLevel>
   </component>

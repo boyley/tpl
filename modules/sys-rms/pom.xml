@@ -1,27 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>tpl</artifactId>
+        <artifactId>modules</artifactId>
         <groupId>com.bogle.tpl</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>modules</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>sys-rms</artifactId>
+    <packaging>jar</packaging>
 
-    <name>modules</name>
+    <name>sys-rms</name>
     <url>http://maven.apache.org</url>
-    <modules>
-        <module>sys-config</module>
-        <module>sys-rms</module>
-    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 </project>
